@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const uri = 'mongodb+srv://MichalH:michal110306@cluster0.xv978a0.mongodb.net/bam-db';
+const url = process.env.MONGOOSE_URL;
 
-mongoose.connect(uri);
+mongoose.connect(url);
 
 console.log('Connected to database!');
