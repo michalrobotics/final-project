@@ -11,8 +11,16 @@ const requestSchema = new mongoose.Schema({
         trim: true
     },
     status: {
-        type: String,
-        default: 'pending'
+        status: {
+            type: String,
+            enum: ['open', 'approved', 'rejected'],
+            default: 'open',
+            trim: true
+        },
+        description: {
+            type: String,
+            trim: true
+        }
     },
     creator: {
         type: mongoose.Schema.Types.ObjectId,

@@ -18,4 +18,71 @@ router.post('/requests', auth, async (req, res) => {
     }
 });
 
+router.post('/requests/:id/:status', auth, async (req, res) => {
+    if (!req.user.isManager) {
+        res.status(StatusCodes.UNAUTHORIZED).send({ error: 'Only managers can change a request status' });
+    }
+
+    try {
+        const request = await Request.findByIdAndUpdate(req.params.id, {});
+
+        if (!request) {
+            res.status(StatusCodes.NOT_FOUND).send();
+        }
+
+        request.status.status = req.params.status.toLowerCase();
+
+        if (req.body) {
+            request.status.description = req.body.description;
+        }
+
+        await request.save();
+        res.send(request);
+    } catch (e) {
+        res.status(StatusCodes.BAD_REQUEST).send(e.message);
+    }
+});
+
+router.get('/requests', auth, async (req, res) => {
+    const match = {};
+
+    if (!req.user.isManager) {
+        match.creator = req.user;
+    }
+
+    if (req.query.status) {
+        match.status = {};
+        match.status.status = req.query.status;
+    }
+
+    if (req.query.request) {
+        match.request = req.query.request;
+    }
+
+    if (req.query.from || req.query.until) {   
+        match.createdAt = {};
+        if (req.query.from) {
+            match.createdAt['$gte'] = new Date(new Date(req.query.from).setHours(0, 0, 0));
+        }
+        if (req.query.until) {
+            match.createdAt['$lte'] = new Date(new Date(req.query.until).setHours(23, 59, 59));
+        }
+    }
+
+    try {
+        const requests = await Request.find(
+            match,
+            null,
+            {
+                limit: 50,
+                skip: parseInt(req.query.skip)
+            }
+        );
+        
+        res.send(requests);
+    } catch (e) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message);
+    }
+});
+
 module.exports = router;
