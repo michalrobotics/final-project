@@ -18,9 +18,17 @@ router.post('/requests', auth, async (req, res) => {
     }
 });
 
-router.post('/requests/:id/:status', auth, async (req, res) => {
+router.patch('/requests/:id', auth, async (req, res) => {
     if (!req.user.isManager) {
         res.status(StatusCodes.UNAUTHORIZED).send({ error: 'Only managers can change a request status' });
+    }
+
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['status', 'description'];
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+
+    if (!isValidOperation) {
+        return res.status(StatusCodes.BAD_REQUEST).send({ error: 'Invalid updates!' });
     }
 
     try {
@@ -30,11 +38,8 @@ router.post('/requests/:id/:status', auth, async (req, res) => {
             res.status(StatusCodes.NOT_FOUND).send();
         }
 
-        request.status.status = req.params.status.toLowerCase();
-
-        if (req.body) {
-            request.status.description = req.body.description;
-        }
+        req.body.status = req.body.status.toLowerCase();
+        request.status = req.body;
 
         await request.save();
         res.send(request);
@@ -59,7 +64,7 @@ router.get('/requests', auth, async (req, res) => {
         match.request = req.query.request;
     }
 
-    if (req.query.from || req.query.until) {   
+    if (req.query.from || req.query.until) {
         match.createdAt = {};
         if (req.query.from) {
             match.createdAt['$gte'] = new Date(new Date(req.query.from).setHours(0, 0, 0));
@@ -78,7 +83,7 @@ router.get('/requests', auth, async (req, res) => {
                 skip: parseInt(req.query.skip)
             }
         );
-        
+
         res.send(requests);
     } catch (e) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message);
