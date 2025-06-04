@@ -12,7 +12,7 @@ router.post('/users', async (req, res) => {
         const token = await user.generateAuthToken();
         res.status(StatusCodes.CREATED).send({ user, token });
     } catch (e) {
-        res.status(StatusCodes.BAD_REQUEST).send(e.message);
+        res.status(StatusCodes.BAD_REQUEST).send({ error: e.message });
     }
 });
 
@@ -23,7 +23,7 @@ router.post('/users/login', async (req, res) => {
 
         res.send({ user, token });
     } catch (e) {
-        res.status(StatusCodes.BAD_REQUEST).send(e.message);
+        res.status(StatusCodes.BAD_REQUEST).send({ error: e.message });
     }
 });
 
@@ -54,7 +54,7 @@ router.patch('/users/me', auth, async (req, res) => {
         await req.user.save();
         res.send(req.user);
     } catch (e) {
-        res.status(StatusCodes.BAD_REQUEST).send(e.message);
+        res.status(StatusCodes.BAD_REQUEST).send({ error: e.message });
     }
 });
 
@@ -73,7 +73,7 @@ router.get('/users/forgot', async (req, res) => {
         const token = await user.generateAuthToken();
         res.send({ user, token });
     } catch (e) {
-        res.status(StatusCodes.UNAUTHORIZED).send(e.message);
+        res.status(StatusCodes.UNAUTHORIZED).send({ error: e.message });
     }
 });
 
