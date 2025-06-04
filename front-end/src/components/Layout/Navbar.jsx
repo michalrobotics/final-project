@@ -1,8 +1,16 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import classes from './Navbar.module.css';
+import UserContext from '../../store/user-context';
 
 const Navbar = () => {
+  const { user, logout } = useContext(UserContext);
+
+  const logoutHandler = () => {
+    logout();
+  }
+
    return (
       <header className={classes.header}>
       <Link to='/'>
@@ -10,21 +18,21 @@ const Navbar = () => {
       </Link>
       <nav>
         <ul>
-          {/* {!isLoggedIn && */}
+          {!user &&
             <li>
               <Link to='/login'>התחברות</Link>
             </li>
-          {/* } */}
-          {/* {isLoggedIn && ( */}
+          }
+          {user && (
             <li>
-              <Link to='/profile'>פרופיל</Link>
+              שלום {user.name}!
             </li>
-          {/* )} */}
-          {/* {isLoggedIn && ( */}
+          )}
+          {user && (
             <li>
-              <button>התנתקות</button>
+              <button onClick={logoutHandler}>התנתקות</button>
             </li>
-          {/* )} */}
+          )}
         </ul>
       </nav>
     </header>
