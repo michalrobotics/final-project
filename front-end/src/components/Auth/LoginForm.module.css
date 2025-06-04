@@ -33,6 +33,7 @@
    border: 1px solid white;
    width: 100%;
    text-align: left;
+   direction: ltr;
    padding: 0.25rem;
 }
 
