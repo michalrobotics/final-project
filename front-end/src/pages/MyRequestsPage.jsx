@@ -22,14 +22,36 @@ const MyRequestsPage = () => {
       });
    }, [sendRequest, user, token]);
 
+   let openRequests = [];
+   let closedRequests = [];
+
+   requests.forEach((request) => {
+      if (request.status.status === 'open') {
+         openRequests.push(request);
+      } else {
+         closedRequests.push(request);
+      }
+   });
+
    if (isLoading) {
       return <LoadingSpinner />;
+   }
+
+   if (requests.length === 0) {
+      return <p>כאן יופיעו הבקשות שלך.</p>;
    }
 
    return (
       <section>
          <h2>הבקשות שלי</h2>
-         <RequestList requests={requests} />
+         <div>
+            <h3>מחכות לאישור</h3>
+            <RequestList requests={openRequests} />
+         </div>
+         <div>
+            <h3>סגורות</h3>
+            <RequestList requests={closedRequests} />
+         </div>
       </section>
    );
 }

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { Fragment, useContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Layout from './components/Layout/Layout';
@@ -20,10 +20,16 @@ const App = () => {
             <Route path='/login' element={<LoginPage />} />
           }
           {user &&
-            <Route path='/request' element={<NewRequestForm />} />
-          }
-          {user &&
-            <Route path='/my-requests' element={<MyRequestsPage />} />
+            <Fragment>
+              <Route path='/requests' element={<MyRequestsPage />} />
+              <Route path='/requests/create' element={<NewRequestForm />} />
+              {user.isManager &&
+                <Fragment>
+                  <Route path='/requests/history' />
+                  <Route path='/requests/approve' />
+                </Fragment>
+              }
+            </Fragment>
           }
           <Route path='/*' element={<Navigate to={'/'} />} />
         </Routes>

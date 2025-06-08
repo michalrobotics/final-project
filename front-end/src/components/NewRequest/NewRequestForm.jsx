@@ -1,11 +1,15 @@
 import { useContext, useRef } from "react";
+import { useNavigate } from 'react-router-dom';
+
 import useHttp from "../../hooks/use-http";
 import UserContext from "../../store/user-context";
 
 const NewRequestForm = (props) => {
+   const navigate = useNavigate();
+
    const { sendRequest: sendNewRequest } = useHttp();
 
-   const { user, token } = useContext(UserContext);
+   const { token } = useContext(UserContext);
 
    const requestInputRef = useRef();
    const descriptionInputRef = useRef();
@@ -26,15 +30,11 @@ const NewRequestForm = (props) => {
             },
             body: {
                request: enteredRequest,
-               description: enteredDescription,
-               creator: user._id
+               description: enteredDescription
             }
          }, (data) => {
-            console.log(data);
          });
-
-         requestInputRef.current.value = '';
-         descriptionInputRef.current.value = '';
+         navigate('/requests');
       }
    }
 

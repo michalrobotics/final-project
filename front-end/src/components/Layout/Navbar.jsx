@@ -25,11 +25,21 @@ const Navbar = () => {
           }
           {user &&
             <Fragment>
+              {user.isManager && (
+                <Fragment>
+                  <li>
+                    <Link to='/requests/approve'>בקשות לאישור</Link>
+                  </li>
+                  <li>
+                    <Link to='/requests/history'>היסטוריית בקשות</Link>
+                  </li>
+                </Fragment>
+              )}
               <li>
-                <Link to='/request'>בקשה חדשה</Link>
+                <Link to='/requests/create'>בקשה חדשה</Link>
               </li>
               <li>
-                <Link to='/my-requests'>הבקשות שלי</Link>
+                <Link to='/requests'>הבקשות שלי</Link>
               </li>
               <li>
                 שלום {user.name}!
