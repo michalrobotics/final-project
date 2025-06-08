@@ -53,6 +53,8 @@ router.get('/requests', auth, async (req, res) => {
 
     if (!req.user.isManager) {
         match.creator = req.user._id;
+    } else if (req.query.creator) {
+        match.creator = req.query.creator;
     }
 
     if (req.query.status) {

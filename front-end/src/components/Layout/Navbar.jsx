@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import classes from './Navbar.module.css';
@@ -11,8 +11,8 @@ const Navbar = () => {
     logout();
   }
 
-   return (
-      <header className={classes.header}>
+  return (
+    <header className={classes.header}>
       <Link to='/'>
         <div className={classes.logo}>ביטחון מידע</div>
       </Link>
@@ -23,20 +23,26 @@ const Navbar = () => {
               <Link to='/login'>התחברות</Link>
             </li>
           }
-          {user && (
-            <li>
-              שלום {user.name}!
-            </li>
-          )}
-          {user && (
-            <li>
-              <button onClick={logoutHandler}>התנתקות</button>
-            </li>
-          )}
+          {user &&
+            <Fragment>
+              <li>
+                <Link to='/request'>בקשה חדשה</Link>
+              </li>
+              <li>
+                <Link to='/my-requests'>הבקשות שלי</Link>
+              </li>
+              <li>
+                שלום {user.name}!
+              </li>
+              <li>
+                <button onClick={logoutHandler}>התנתקות</button>
+              </li>
+            </Fragment>
+          }
         </ul>
       </nav>
     </header>
-   );
+  );
 }
 
 export default Navbar;

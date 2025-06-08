@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const useHttp = () => {
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
 
-   const sendRequest = async (reqConfig, implementData) => {
+   const sendRequest = useCallback(async (reqConfig, implementData) => {
       setIsLoading(true);
       setError(null);
       try {
@@ -13,7 +13,7 @@ const useHttp = () => {
             headers: reqConfig.headers ? reqConfig.headers : {},
             body: reqConfig.body? JSON.stringify(reqConfig.body) : null
          });
-
+         
          const data = await response.json();
 
          if (!response.ok) {
@@ -25,7 +25,7 @@ const useHttp = () => {
          setError(e.message || 'Something went wrong');
       }
       setIsLoading(false);
-   }
+   }, []);
 
    return {
       isLoading,
