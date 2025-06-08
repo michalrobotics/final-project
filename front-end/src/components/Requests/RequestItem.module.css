@@ -1,0 +1,8 @@
+.request-item {
+   border: blue 3px solid;
+   border-radius: 1vmin;
+   padding: 1% 2%;
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: 1%;
+}

@@ -1,0 +1,29 @@
+.spinner {
+  display: inline-block;
+  width: 6vw;
+  height: 6vw;
+}
+
+.spinner:after {
+  content: ' ';
+  display: block;
+  width: 5vw;
+  height: 5vw;
+  position: absolute;
+  right: 47.5vw;
+  top: 40vh;
+  border-radius: 50%;
+  border: 1vh solid teal;
+  border-color: teal transparent teal transparent;
+  animation: spinner 1.2s linear infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

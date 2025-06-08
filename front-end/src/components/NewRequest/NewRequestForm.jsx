@@ -13,21 +13,29 @@ const NewRequestForm = (props) => {
    const submitHandler = (event) => {
       event.preventDefault();
 
-      sendNewRequest({
-         url: 'http://localhost:8000/requests',
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-         },
-         body: {
-            request: requestInputRef.current.value,
-            description: descriptionInputRef.current.value,
-            creator: user._id
-         }
-      }, (data) => {
-         console.log(data);
-      });
+      const enteredRequest = requestInputRef.current.value.trim();
+      const enteredDescription = descriptionInputRef.current.value.trim();
+
+      if (enteredRequest !== '' && enteredDescription !== '') {
+         sendNewRequest({
+            url: 'http://localhost:8000/requests',
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': token
+            },
+            body: {
+               request: enteredRequest,
+               description: enteredDescription,
+               creator: user._id
+            }
+         }, (data) => {
+            console.log(data);
+         });
+
+         requestInputRef.current.value = '';
+         descriptionInputRef.current.value = '';
+      }
    }
 
    return (
@@ -35,10 +43,11 @@ const NewRequestForm = (props) => {
          <div>
             <label htmlFor="requests">סוג בקשה</label>
             <select id="requests" ref={requestInputRef}>
-               <option value="black"></option>
-               <option value="code"></option>
-               <option value="enter"></option>
-               <option value="secret"></option>
+               <option></option>
+               <option value='השחרה'>השחרה</option>
+               <option value='אישור כניסה לבה"ד'>אישור כניסה לבה"ד</option>
+               <option value='קידוד חוגר'>קידוד חוגר</option>
+               <option value='טופס חתימה על שו"ס'>טופס חתימה על שו"ס</option>
             </select>
          </div>
          <div>

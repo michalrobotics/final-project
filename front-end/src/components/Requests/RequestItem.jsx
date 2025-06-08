@@ -1,6 +1,8 @@
+import classes from './RequestItem.module.css';
+
 const RequestItem = (props) => {
    return (
-      <div>
+      <div className={classes['request-item']}>
          <p>{props.request}</p>
          <p>{props.description}</p>
          <p>{props.status.status}</p>
