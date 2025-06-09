@@ -29,7 +29,7 @@ const NewRequestForm = (props) => {
                'Authorization': token
             },
             body: {
-               request: enteredRequest,
+               title: enteredRequest,
                description: enteredDescription
             }
          });

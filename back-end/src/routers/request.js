@@ -24,7 +24,7 @@ router.patch('/requests/:id', auth, async (req, res) => {
     }
 
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['status', 'description'];
+    const allowedUpdates = ['state', 'description'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
     if (!isValidOperation) {
@@ -38,7 +38,7 @@ router.patch('/requests/:id', auth, async (req, res) => {
             res.status(StatusCodes.NOT_FOUND).send();
         }
 
-        req.body.status = req.body.status.toLowerCase();
+        req.body.state = req.body.state.toLowerCase();
         request.status = req.body;
 
         await request.save();
@@ -57,9 +57,9 @@ router.get('/requests', auth, async (req, res) => {
         match.creator = req.query.creator;
     }
 
-    if (req.query.status) {
+    if (req.query.state) {
         match.status = {};
-        match.status.status = req.query.status;
+        match.status.state = req.query.state;
     }
 
     if (req.query.request) {

@@ -12,7 +12,7 @@ const RequestItem = (props) => {
    const request = props.request;
 
    const approveHandler = () => {
-      const send = window.confirm(`לאשר את הבקשה\n${request.request}\nשל ${request.creator.name}?`);
+      const send = window.confirm(`לאשר את הבקשה\n${request.title}\nשל ${request.creator.name}?`);
 
       if (send) {
          sendRequest({
@@ -23,7 +23,7 @@ const RequestItem = (props) => {
                'Authorization': token
             },
             body: {
-               status: 'approved'
+               state: 'approved'
             }
          });
          window.location.reload();
@@ -31,7 +31,7 @@ const RequestItem = (props) => {
    }
 
    const rejectHandler = () => {
-      const description = prompt(`לסרב לבקשה\n${request.request}\nשל ${request.creator.name}?\nניתן לפרט:`);
+      const description = prompt(`לסרב לבקשה\n${request.title}\nשל ${request.creator.name}?\nניתן לפרט:`);
       if (description !== null) {
          sendRequest({
             url: `http://localhost:8000/requests/${request._id}`,
@@ -41,7 +41,7 @@ const RequestItem = (props) => {
                'Authorization': token
             },
             body: {
-               status: 'rejected',
+               state: 'rejected',
                description: description || null
             }
          });
@@ -51,9 +51,9 @@ const RequestItem = (props) => {
 
    return (
       <div className={classes['request-item']}>
-         <p>{request.request}</p>
+         <p>{request.title}</p>
          <p>{request.description}</p>
-         <p>{request.status.status}</p>
+         <p>{request.status.state}</p>
          {request.status.description &&
             <p>{request.status.description}</p>
          }

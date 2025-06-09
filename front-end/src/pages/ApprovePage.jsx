@@ -13,7 +13,7 @@ const ApprovePage = () => {
 
    useEffect(() => {
       sendRequest({
-         url: `http://localhost:8000/requests?status=open`,
+         url: `http://localhost:8000/requests?state=open`,
          headers: {
             'Authorization': token
          }

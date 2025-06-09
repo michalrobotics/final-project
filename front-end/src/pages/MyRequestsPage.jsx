@@ -26,7 +26,7 @@ const MyRequestsPage = () => {
    let closedRequests = [];
 
    requests.forEach((request) => {
-      if (request.status.status === 'open') {
+      if (request.status.state === 'open') {
          openRequests.push(request);
       } else {
          closedRequests.push(request);

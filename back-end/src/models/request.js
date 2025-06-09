@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const requestSchema = new mongoose.Schema({
-    request: {
+    title: {
         type: String,
         required: true,
         trim: true
@@ -11,7 +11,7 @@ const requestSchema = new mongoose.Schema({
         trim: true
     },
     status: {
-        status: {
+        state: {
             type: String,
             enum: ['open', 'approved', 'rejected'],
             default: 'open',
