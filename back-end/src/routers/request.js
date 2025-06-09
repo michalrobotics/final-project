@@ -1,7 +1,7 @@
 const express = require('express');
 const router = new express.Router();
 const Request = require('../models/request');
-const auth = require('../middlewear/auth');
+const auth = require('../middleware/auth');
 const { StatusCodes } = require('http-status-codes');
 
 router.post('/requests', auth, async (req, res) => {
