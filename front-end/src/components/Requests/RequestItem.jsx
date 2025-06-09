@@ -1,14 +1,71 @@
+import { useContext } from 'react';
+
+import useHttp from '../../hooks/use-http';
 import classes from './RequestItem.module.css';
+import UserContext from '../../store/user-context';
 
 const RequestItem = (props) => {
+   const { sendRequest } = useHttp();
+
+   const { token } = useContext(UserContext);
+
+   const request = props.request;
+
+   const approveHandler = () => {
+      const send = window.confirm(`לאשר את הבקשה\n${request.request}\nשל ${request.creator.name}?`);
+
+      if (send) {
+         sendRequest({
+            url: `http://localhost:8000/requests/${request._id}`,
+            method: 'PATCH',
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': token
+            },
+            body: {
+               status: 'approved'
+            }
+         });
+         window.location.reload();
+      }
+   }
+
+   const rejectHandler = () => {
+      const description = prompt(`לסרב לבקשה\n${request.request}\nשל ${request.creator.name}?\nניתן לפרט:`);
+      if (description !== null) {
+         sendRequest({
+            url: `http://localhost:8000/requests/${request._id}`,
+            method: 'PATCH',
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': token
+            },
+            body: {
+               status: 'rejected',
+               description: description || null
+            }
+         });
+         window.location.reload();
+      }
+   }
+
    return (
       <div className={classes['request-item']}>
-         <p>{props.request}</p>
-         <p>{props.description}</p>
-         <p>{props.status.status}</p>
-         {props.status.description &&
-            <p>{props.status.description}</p>
+         <p>{request.request}</p>
+         <p>{request.description}</p>
+         <p>{request.status.status}</p>
+         {request.status.description &&
+            <p>{request.status.description}</p>
          }
+         {props.showUser &&
+            <p>{request.creator.name}</p>
+         }
+         {props.type === 'checkbox' && (
+            <div>
+               <button onClick={approveHandler}>אשר</button>
+               <button onClick={rejectHandler}>סרב</button>
+            </div>
+         )}
       </div>
    );
 }

@@ -7,7 +7,7 @@ const RequestList = (props) => {
       <Fragment>
          <ul className={classes['request-list']}>
             {props.requests.map((request) => (
-               <RequestItem key={request._id} request={request.request} description={request.description} status={request.status} />
+               <RequestItem type={props.type} key={request._id} request={request} showUser={props.showUser} />
             ))}
          </ul>
       </Fragment>

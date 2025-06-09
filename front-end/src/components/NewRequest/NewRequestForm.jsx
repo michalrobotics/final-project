@@ -32,7 +32,6 @@ const NewRequestForm = (props) => {
                request: enteredRequest,
                description: enteredDescription
             }
-         }, (data) => {
          });
          navigate('/requests');
       }

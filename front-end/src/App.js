@@ -7,6 +7,8 @@ import WelcomePage from './pages/WelcomePage';
 import NewRequestForm from './components/NewRequest/NewRequestForm';
 import UserContext from './store/user-context';
 import MyRequestsPage from './pages/MyRequestsPage';
+import ApprovePage from './pages/ApprovePage';
+import HistoryPage from './pages/HistoryPage';
 
 const App = () => {
   const { user } = useContext(UserContext);
@@ -25,8 +27,8 @@ const App = () => {
               <Route path='/requests/create' element={<NewRequestForm />} />
               {user.isManager &&
                 <Fragment>
-                  <Route path='/requests/history' />
-                  <Route path='/requests/approve' />
+                  <Route path='/requests/history' element={<HistoryPage />} />
+                  <Route path='/requests/approve' element={<ApprovePage />} />
                 </Fragment>
               }
             </Fragment>

@@ -20,7 +20,9 @@ const useHttp = () => {
             throw new Error(data.error);
          }
 
-         implementData(data);
+         if (implementData) {
+            implementData(data);
+         }
       } catch (e) {
          setError(e.message || 'Something went wrong');
       }

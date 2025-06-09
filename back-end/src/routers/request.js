@@ -32,7 +32,7 @@ router.patch('/requests/:id', auth, async (req, res) => {
     }
 
     try {
-        const request = await Request.findByIdAndUpdate(req.params.id, {});
+        const request = await Request.findById(req.params.id);
 
         if (!request) {
             res.status(StatusCodes.NOT_FOUND).send();
@@ -85,6 +85,10 @@ router.get('/requests', auth, async (req, res) => {
                 skip: parseInt(req.query.skip)
             }
         );
+
+        for (const request of requests) {
+            await request.populate('creator');
+        }
 
         res.send(requests);
     } catch (e) {
