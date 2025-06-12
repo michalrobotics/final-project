@@ -3,8 +3,7 @@ import { Fragment } from "react";
 import AdminRequestItem from "./AdminRequestItem";
 import classes from '../RequestList.module.css';
 
-const RequestList = (props) => {
-
+const AdminRequestList = (props) => {
    return (
       <Fragment>
          <ul className={classes['request-list']}>
@@ -18,4 +17,4 @@ const RequestList = (props) => {
    );
 }
 
-export default RequestList;
+export default AdminRequestList;
