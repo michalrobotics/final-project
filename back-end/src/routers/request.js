@@ -14,7 +14,7 @@ router.post('/requests', auth, async (req, res) => {
         await request.save();
         res.status(StatusCodes.CREATED).send(request);
     } catch (e) {
-        res.status(StatusCodes.BAD_REQUEST).send(e.message);
+        res.status(StatusCodes.BAD_REQUEST).send({ error: e.message });
     }
 });
 
@@ -44,7 +44,7 @@ router.patch('/requests/:id', auth, async (req, res) => {
         await request.save();
         res.send(request);
     } catch (e) {
-        res.status(StatusCodes.BAD_REQUEST).send(e.message);
+        res.status(StatusCodes.BAD_REQUEST).send({ error: e.message });
     }
 });
 
@@ -92,7 +92,7 @@ router.get('/requests', auth, async (req, res) => {
 
         res.send(requests);
     } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e.message);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: e.message });
     }
 });
 
