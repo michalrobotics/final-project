@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 
 import UserContext from "../store/user-context";
 import useHttp from "../hooks/use-http";
-import RequestList from "../components/Requests/RequestList";
+import AdminRequestList from "../components/Requests/Admin/AdminRequestList";
 
 const ApprovePage = () => {
    const { sendRequest } = useHttp();
@@ -24,7 +24,7 @@ const ApprovePage = () => {
 
    return (
       <div>
-         <RequestList type="checkbox" requests={requests} showUser={true} />
+         <AdminRequestList requests={requests} showUser={true} />
       </div>
    );
 }

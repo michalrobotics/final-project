@@ -1,14 +1,16 @@
 import { Fragment } from "react";
-import RequestItem from "./RequestItem";
-import classes from './RequestList.module.css';
+
+import AdminRequestItem from "./AdminRequestItem";
+import classes from '../RequestList.module.css';
 
 const RequestList = (props) => {
+
    return (
       <Fragment>
          <ul className={classes['request-list']}>
             {props.requests.map((request) => (
                <li key={request._id}>
-                  <RequestItem type={props.type} request={request} showUser={props.showUser} />
+                  <AdminRequestItem request={request} showUser={true} />
                </li>
             ))}
          </ul>

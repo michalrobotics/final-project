@@ -7,7 +7,7 @@ import UserContext from "../../store/user-context";
 const NewRequestForm = (props) => {
    const navigate = useNavigate();
 
-   const { sendRequest: sendNewRequest } = useHttp();
+   const { sendRequest: sendNewRequest, isLoading } = useHttp();
 
    const { token } = useContext(UserContext);
 
@@ -53,7 +53,12 @@ const NewRequestForm = (props) => {
             <label htmlFor="description">פירוט</label>
             <textarea id="description" ref={descriptionInputRef} />
          </div>
-         <button>שלח</button>
+         {isLoading &&
+            <p>שולח בקשה...</p>
+         }
+         {!isLoading &&
+            <button>שלח</button>
+         }
       </form>
    );
 }
