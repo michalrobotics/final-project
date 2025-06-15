@@ -39,7 +39,7 @@ const ApprovePage = () => {
       return <LoadingSpinner />;
    }
 
-   if (requests.length === 0) {
+   if (filteredRequests.length === 0) {
       return <p>כאן יופיעו הבקשות לאישור.</p>;
    }
 
