@@ -31,7 +31,8 @@ export const UserCtxProvider = (props) => {
       setUser(null);
       setToken('');
 
-      localStorage.clear();
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
    }
 
    const contextValue = {
