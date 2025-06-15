@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, Fragment, useMemo } from "react";
 
 import UserContext from "../store/user-context";
 import useHttp from "../hooks/use-http";
@@ -11,6 +11,18 @@ const ApprovePage = () => {
    const { token } = useContext(UserContext);
 
    const [requests, setRequests] = useState([]);
+   const [filter, setFilter] = useState();
+
+   const filteredRequests = useMemo(() => {
+      if (filter) {
+         return requests.filter((request) => request.title === filter);
+      }
+      return requests;
+   }, [requests, filter]);
+
+   const filterChangeHandler = (event) => {
+      setFilter(event.target.value);
+   }
 
    useEffect(() => {
       sendRequest({
@@ -32,7 +44,16 @@ const ApprovePage = () => {
    }
 
    return (
-      <AdminRequestList requests={requests} />
+      <Fragment>
+         <select id="requests" value={filter} onChange={filterChangeHandler}>
+            <option></option>
+            <option value='השחרה'>השחרה</option>
+            <option value='אישור כניסה לבה"ד'>אישור כניסה לבה"ד</option>
+            <option value='קידוד חוגר'>קידוד חוגר</option>
+            <option value='טופס חתימה על שו"ס'>טופס חתימה על שו"ס</option>
+         </select>
+         <AdminRequestList requests={filteredRequests} />
+      </Fragment>
    );
 }
 

@@ -38,7 +38,7 @@ const RejectModal = (props) => {
             <textarea ref={descriptionInputRef} />
          </p>
          <button onClick={props.onClose}>ביטול</button>
-         <button onClick={rejectHandler}>אשר</button>
+         <button onClick={rejectHandler}>סרב</button>
       </Modal>
    );
 }
