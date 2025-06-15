@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useHttp from "../../hooks/use-http";
 import UserContext from "../../store/user-context";
 
-const NewRequestForm = (props) => {
+const NewRequestForm = () => {
    const navigate = useNavigate();
 
    const { sendRequest: sendNewRequest, isLoading } = useHttp();

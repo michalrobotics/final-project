@@ -36,7 +36,7 @@ const LoginForm = () => {
       if (isLogin) {
          url = 'http://localhost:8000/users/login';
       } else {
-         url = 'http://localhost:8000/users'
+         url = 'http://localhost:8000/users';
          body.name = nameInputRef.current.value;
          body.idfNum = idfNumInputRef.current.value;
       }
