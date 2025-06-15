@@ -4,6 +4,11 @@ const RequestItem = (props) => {
 
    const request = props.request;
 
+   let date;
+   if (props.showDate) {
+      date = new Date(request.createdAt).toLocaleDateString();
+   }
+
    return (
       <div className={classes['request-item']}>
          <p>{request.title}</p>
@@ -14,6 +19,9 @@ const RequestItem = (props) => {
          }
          {props.showUser &&
             <p>{request.creator.name}</p>
+         }
+         {props.showDate &&
+            <p>{date}</p>
          }
       </div>
    );

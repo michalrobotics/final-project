@@ -46,11 +46,11 @@ const MyRequestsPage = () => {
          <h2>הבקשות שלי</h2>
          <div>
             <h3>מחכות לאישור</h3>
-            <RequestList type="log" requests={openRequests} showUser={false} />
+            <RequestList requests={openRequests} />
          </div>
          <div>
             <h3>סגורות</h3>
-            <RequestList type="log" requests={closedRequests} showUser={false} />
+            <RequestList requests={closedRequests} />
          </div>
       </section>
    );

@@ -3,9 +3,10 @@ import { useState, useContext, useEffect } from "react";
 import UserContext from "../store/user-context";
 import useHttp from "../hooks/use-http";
 import AdminRequestList from "../components/Requests/Admin/AdminRequestList";
+import LoadingSpinner from '../components/UI/LoadingSpinner';
 
 const ApprovePage = () => {
-   const { sendRequest } = useHttp();
+   const { sendRequest, isLoading } = useHttp();
 
    const { token } = useContext(UserContext);
 
@@ -22,10 +23,16 @@ const ApprovePage = () => {
       });
    }, [sendRequest, token]);
 
+   if (isLoading) {
+      return <LoadingSpinner />;
+   }
+
+   if (requests.length === 0) {
+      return <p>כאן יופיעו הבקשות לאישור.</p>;
+   }
+
    return (
-      <div>
-         <AdminRequestList requests={requests} showUser={true} />
-      </div>
+      <AdminRequestList requests={requests} />
    );
 }
 

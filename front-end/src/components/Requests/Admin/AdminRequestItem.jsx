@@ -29,7 +29,7 @@ const AdminRequestItem = (props) => {
 
    return (
       <Fragment>
-         <RequestItem request={props.request} showUser={props.showUser} />
+         <RequestItem request={props.request} showDate={props.showDate} showUser={props.showUser} />
          <div>
             <button onClick={approveHandler}>אשר</button>
             <button onClick={rejectHandler}>סרב</button>

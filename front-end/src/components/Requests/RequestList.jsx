@@ -8,7 +8,11 @@ const RequestList = (props) => {
          <ul className={classes['request-list']}>
             {props.requests.map((request) => (
                <li key={request._id}>
-                  <RequestItem type={props.type} request={request} showUser={props.showUser} />
+                  <RequestItem
+                     request={request}
+                     showDate={props.showDate}
+                     showUser={props.showUser}
+                  />
                </li>
             ))}
          </ul>

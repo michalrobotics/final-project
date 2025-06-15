@@ -9,7 +9,7 @@ const AdminRequestList = (props) => {
          <ul className={classes['request-list']}>
             {props.requests.map((request) => (
                <li key={request._id}>
-                  <AdminRequestItem request={request} showUser={true} />
+                  <AdminRequestItem request={request} showUser showDate />
                </li>
             ))}
          </ul>
