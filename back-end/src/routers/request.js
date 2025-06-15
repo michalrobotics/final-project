@@ -58,8 +58,8 @@ router.get('/requests', auth, async (req, res) => {
     }
 
     if (req.query.state) {
-        match.status = {};
-        match.status.state = req.query.state;
+        const states = req.query.state.split(',');
+        match['status.state'] = { $in: states };
     }
 
     if (req.query.request) {
