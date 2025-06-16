@@ -9,7 +9,7 @@ import UserContext from './store/user-context';
 import MyRequestsPage from './pages/MyRequestsPage';
 import ApprovePage from './pages/ApprovePage';
 import HistoryPage from './pages/HistoryPage';
-import RecoveryPage from './pages/RecoveryPage';
+import NewPasswordPage from './pages/NewPasswordPage';
 
 const App = () => {
   const { user } = useContext(UserContext);
@@ -19,7 +19,7 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path='/' element={<WelcomePage />} />
-          <Route path='/recovery' element={<RecoveryPage />} />
+          <Route path='/reset-password' element={<NewPasswordPage />} />
           {!user &&
             <Route path='/login' element={<LoginPage />} />
           }

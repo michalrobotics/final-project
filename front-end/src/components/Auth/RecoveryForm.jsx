@@ -1,33 +1,26 @@
 import { useRef } from "react";
 
-import useHttp from "../hooks/use-http";
+import useHttp from "../../hooks/use-http";
 
-const RecoveryPage = () => {
+const RecoveryForm = (props) => {
     const { sendRequest, isLoading, error } = useHttp();
 
     const emailInputRef = useRef();
-    const contentInputRef = useRef();
 
     const submitHandler = (event) => {
         event.preventDefault();
-
         sendRequest({
-            url: 'http://localhost:8000/email',
+            url: 'http://localhost:8000/users/recover',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: {
-                email: emailInputRef.current.value,
-                content: contentInputRef.current.value
+                email: emailInputRef.current.value
             }
         });
     }
-
-    if (error) {
-        return <p>{error}</p>;
-    }
-
+    
     if (isLoading) {
         return <p>Sending...</p>;
     }
@@ -36,11 +29,13 @@ const RecoveryPage = () => {
         <form onSubmit={submitHandler}>
             <label htmlFor="email">אימייל</label>
             <input type="email" id="email" ref={emailInputRef} />
-            <label htmlFor="content">תוכן</label>
-            <textarea name="content" id="content" ref={contentInputRef} />
-            <button>send</button>
+            <button>שלח מייל שחזור</button>
+            <p onClick={props.onBack}>חזרה להתחברות</p>
+            {error &&
+                <p>{error}</p>
+            }
         </form>
     )
 }
 
-export default RecoveryPage;
+export default RecoveryForm;
