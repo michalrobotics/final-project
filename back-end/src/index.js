@@ -30,7 +30,7 @@ app.post('/email', async (req, res) => {
             to: req.body.email,
             from: process.env.EMAIL,
             subject: 'ממיכל',
-            text: 'שימי לב!\nאימייל זה נשלח אלייך מאבטיפוס התוכנה של מיכל\nברכות.'
+            text: req.body.content
         };
 
         const info = await transporter.sendMail(mailOptions);

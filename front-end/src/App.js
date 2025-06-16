@@ -9,6 +9,7 @@ import UserContext from './store/user-context';
 import MyRequestsPage from './pages/MyRequestsPage';
 import ApprovePage from './pages/ApprovePage';
 import HistoryPage from './pages/HistoryPage';
+import RecoveryPage from './pages/RecoveryPage';
 
 const App = () => {
   const { user } = useContext(UserContext);
@@ -18,6 +19,7 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path='/' element={<WelcomePage />} />
+          <Route path='/recovery' element={<RecoveryPage />} />
           {!user &&
             <Route path='/login' element={<LoginPage />} />
           }
