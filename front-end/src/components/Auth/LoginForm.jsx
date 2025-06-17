@@ -1,4 +1,4 @@
-import { Fragment, useContext, useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import classes from './LoginForm.module.css';
@@ -59,7 +59,7 @@ const LoginForm = (props) => {
          <h1>{isLogin ? 'התחברות' : 'הרשמה'}</h1>
          <form onSubmit={submitHandler}>
             {!isLogin && (
-               <Fragment>
+               <>
                   <div className={classes.control}>
                      <label htmlFor='name'>שם מלא</label>
                      <input type='text' id='name' ref={nameInputRef} required />
@@ -68,7 +68,7 @@ const LoginForm = (props) => {
                      <label htmlFor='idfNum'>מספר אישי</label>
                      <input type='number' id='idfNum' ref={idfNumInputRef} required />
                   </div>
-               </Fragment>
+               </>
             )}
             <div className={classes.control}>
                <label htmlFor='email'>כתובת אימייל</label>

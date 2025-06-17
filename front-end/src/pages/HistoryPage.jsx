@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, Fragment, useMemo } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 
 import UserContext from "../store/user-context";
 import useHttp from "../hooks/use-http";
@@ -70,7 +70,7 @@ const HistoryPage = () => {
    }
 
    return (
-      <Fragment>
+      <>
          <label htmlFor="start-date">תאריך התחלה</label>
          <input type="date" id="start-date" onChange={startDateChangeHandler} value={startDate} />
          <label htmlFor="end-date">תאריך סיום</label>
@@ -79,7 +79,7 @@ const HistoryPage = () => {
          {requests.length % 50 === 0 &&
             <p onClick={loadMore}>טען עוד...</p>
          }
-      </Fragment>
+      </>
    );
 }
 

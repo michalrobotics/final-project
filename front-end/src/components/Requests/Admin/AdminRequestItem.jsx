@@ -1,4 +1,4 @@
-import { Fragment, useState, useContext } from "react";
+import { useState, useContext } from "react";
 
 import RequestItem from "../RequestItem";
 import UserContext from "../../../store/user-context";
@@ -28,7 +28,7 @@ const AdminRequestItem = (props) => {
    }
 
    return (
-      <Fragment>
+      <>
          <RequestItem request={props.request} showDate={props.showDate} showUser={props.showUser} />
          <div>
             <button onClick={approveHandler}>אשר</button>
@@ -40,7 +40,7 @@ const AdminRequestItem = (props) => {
                <RejectModal request={props.request} onClose={cancelReject} token={token} />
             }
          </div>
-      </Fragment>
+      </>
    );
 }
 

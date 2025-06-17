@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, Fragment, useMemo } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 
 import UserContext from "../store/user-context";
 import useHttp from "../hooks/use-http";
@@ -44,7 +44,7 @@ const ApprovePage = () => {
    }
 
    return (
-      <Fragment>
+      <>
          <select id="requests" value={filter} onChange={filterChangeHandler}>
             <option></option>
             <option value='השחרה'>השחרה</option>
@@ -53,7 +53,7 @@ const ApprovePage = () => {
             <option value='טופס חתימה על שו"ס'>טופס חתימה על שו"ס</option>
          </select>
          <AdminRequestList requests={filteredRequests} />
-      </Fragment>
+      </>
    );
 }
 

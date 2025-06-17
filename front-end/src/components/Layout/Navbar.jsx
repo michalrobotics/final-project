@@ -1,4 +1,4 @@
-import { Fragment, useContext } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import classes from './Navbar.module.css';
@@ -24,16 +24,16 @@ const Navbar = () => {
             </li>
           }
           {user &&
-            <Fragment>
+            <>
               {user.isManager && (
-                <Fragment>
+                <>
                   <li>
                     <Link to='/requests/approve'>בקשות לאישור</Link>
                   </li>
                   <li>
                     <Link to='/requests/history'>היסטוריית בקשות</Link>
                   </li>
-                </Fragment>
+                </>
               )}
               <li>
                 <Link to='/requests/create'>בקשה חדשה</Link>
@@ -47,7 +47,7 @@ const Navbar = () => {
               <li>
                 <button onClick={logoutHandler}>התנתקות</button>
               </li>
-            </Fragment>
+            </>
           }
         </ul>
       </nav>
