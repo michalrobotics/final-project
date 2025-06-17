@@ -1,4 +1,5 @@
 import classes from './RequestItem.module.css';
+import ShowMoreText from '../UI/ShowMoreText';
 
 const RequestItem = (props) => {
 
@@ -12,10 +13,10 @@ const RequestItem = (props) => {
    return (
       <div className={classes['request-item']}>
          <p>{request.title}</p>
-         <p>{request.description}</p>
+         <ShowMoreText limit="15">{request.description}</ShowMoreText>
          <p>{request.status.state}</p>
          {request.status.description &&
-            <p>{request.status.description}</p>
+            <ShowMoreText limit="15">{request.status.description}</ShowMoreText>
          }
          {props.showUser &&
             <p>{request.creator.name}</p>
