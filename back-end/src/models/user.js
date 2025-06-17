@@ -35,16 +35,6 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    securityQuestion: {
-        question: {
-            type: String,
-            required: true
-        },
-        answer: {
-            type: String,
-            required: true
-        }
-    },
     tokens: [{
         token: {
             type: String,

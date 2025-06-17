@@ -60,25 +60,6 @@ router.patch('/users/me', auth, async (req, res) => {
     }
 });
 
-router.get('/users/forgot', async (req, res) => {
-    try {
-        const user = await User.findOne({
-            email: req.body.email,
-            'securityQuestion.question': req.body.question,
-            'securityQuestion.answer': req.body.answer
-        });
-
-        if (!user) {
-            throw new Error('Unauthorized');
-        }
-
-        const token = await user.generateAuthToken(process.env.JWT_SECRET);
-        res.send({ user, token });
-    } catch (e) {
-        res.status(StatusCodes.UNAUTHORIZED).send({ error: e.message });
-    }
-});
-
 router.post('/users/recover', async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
