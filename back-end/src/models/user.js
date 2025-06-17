@@ -35,16 +35,6 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    securityQuestion: {
-        question: {
-            type: String,
-            required: true
-        },
-        answer: {
-            type: String,
-            required: true
-        }
-    },
     tokens: [{
         token: {
             type: String,
@@ -53,10 +43,10 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
-userSchema.methods.generateAuthToken = async function () {
+userSchema.methods.generateAuthToken = async function (secret) {
     const user = this;
 
-    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET, { expiresIn: '3h' });
+    const token = jwt.sign({ _id: user._id.toString() }, secret, { expiresIn: '3h' });
 
     user.tokens = user.tokens.concat({ token });
     await user.save();

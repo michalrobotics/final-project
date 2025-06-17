@@ -5,7 +5,7 @@ import classes from './LoginForm.module.css';
 import useHttp from '../../hooks/use-http';
 import UserContext from '../../store/user-context';
 
-const LoginForm = () => {
+const LoginForm = (props) => {
    const navigate = useNavigate();
 
    const { sendRequest: sendLoginRequest, error, isLoading } = useHttp();
@@ -93,6 +93,9 @@ const LoginForm = () => {
                >
                   {isLogin ? 'אין לך חשבון? להרשמה' : 'להתחברות עם משתמש קיים'}
                </button>
+               {isLogin &&
+                  <p onClick={props.onForgot}>שכחתי סיסמה</p>
+               }
             </div>
          </form>
       </section>
