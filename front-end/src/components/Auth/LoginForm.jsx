@@ -1,9 +1,10 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import classes from './LoginForm.module.css';
 import useHttp from '../../hooks/use-http';
 import UserContext from '../../store/user-context';
+import useInput from '../../hooks/use-input';
 
 const LoginForm = (props) => {
    const navigate = useNavigate();
@@ -12,33 +13,90 @@ const LoginForm = (props) => {
 
    const { login } = useContext(UserContext);
 
-   const nameInputRef = useRef();
-   const idfNumInputRef = useRef();
-   const emailInputRef = useRef();
-   const passwordInputRef = useRef();
-
    const [isLogin, setIsLogin] = useState(true);
 
    const switchAuthModeHandler = () => {
       setIsLogin(!isLogin);
    }
 
+   const {
+      value: nameValue,
+      isValid: nameIsValid,
+      hasError: nameHasError,
+      valueChangeHandler: nameChangeHandler,
+      inputBlurHandler: nameBlurHandler,
+      reset: resetName
+   } = useInput((value) => {
+      const names = value.trim().split(' ');
+
+      return names.length >= 2;
+   });
+
+   const {
+      value: idfNumValue,
+      isValid: idfNumIsValid,
+      hasError: idfNumHasError,
+      valueChangeHandler: idfNumChangeHandler,
+      inputBlurHandler: idfNumBlurHandler,
+      reset: resetIdfNum
+   } = useInput((value) => (
+      value.length === 7
+   ));
+
+   const {
+      value: emailValue,
+      isValid: emailIsValid,
+      hasError: emailHasError,
+      valueChangeHandler: emailChangeHandler,
+      inputBlurHandler: emailBlurHandler,
+      reset: resetEmail
+   } = useInput((value) => (
+      value.includes('@')
+   ));
+
+   const {
+      value: passwordValue,
+      isValid: passwordIsValid,
+      hasError: passwordHasError,
+      valueChangeHandler: passwordChangeHandler,
+      inputBlurHandler: passwordBlurHandler,
+      reset: resetPassword
+   } = useInput((value) => (
+      value.length >= 6
+   ));
+
+   let formIsValid = false;
+
+   if (emailIsValid && passwordIsValid) {
+      formIsValid = true;
+   }
+
+   if (!isLogin) {
+      if (!nameIsValid || !idfNumIsValid) {
+         formIsValid = false;
+      }
+   }
+
    const submitHandler = (event) => {
       event.preventDefault();
 
-      let url;
+      if (!formIsValid) {
+         return;
+      }
 
       const body = {
-         email: emailInputRef.current.value,
-         password: passwordInputRef.current.value
+         email: emailValue,
+         password: passwordValue
       };
+
+      let url;
 
       if (isLogin) {
          url = 'http://localhost:8000/users/login';
       } else {
          url = 'http://localhost:8000/users';
-         body.name = nameInputRef.current.value;
-         body.idfNum = idfNumInputRef.current.value;
+         body.name = nameValue;
+         body.idfNum = idfNumValue;
       }
 
       sendLoginRequest({
@@ -50,6 +108,11 @@ const LoginForm = (props) => {
          }
       }, (data) => {
          login(data.user, data.token);
+         
+         resetName();
+         resetIdfNum();
+         resetEmail();
+         resetPassword();
          navigate('/', { replace: true });
       });
    }
@@ -62,21 +125,53 @@ const LoginForm = (props) => {
                <>
                   <div className={classes.control}>
                      <label htmlFor='name'>שם מלא</label>
-                     <input type='text' id='name' ref={nameInputRef} required />
+                     <input
+                        type='text'
+                        id='name'
+                        value={nameValue}
+                        onChange={nameChangeHandler}
+                        onBlur={nameBlurHandler}
+                        required
+                     />
+                     {nameHasError && <p>נא להכניס שם מלא</p>}
                   </div>
                   <div className={classes.control}>
                      <label htmlFor='idfNum'>מספר אישי</label>
-                     <input type='number' id='idfNum' ref={idfNumInputRef} required />
+                     <input
+                        type='number'
+                        id='idfNum'
+                        value={idfNumValue}
+                        onChange={idfNumChangeHandler}
+                        onBlur={idfNumBlurHandler}
+                        required 
+                     />
+                     {idfNumHasError && <p>נא להכניס מס' אישי תקין</p>}
                   </div>
                </>
             )}
             <div className={classes.control}>
                <label htmlFor='email'>כתובת אימייל</label>
-               <input type='email' id='email' ref={emailInputRef} required />
+               <input
+                  type='email'
+                  id='email'
+                  value={emailValue}
+                  onChange={emailChangeHandler}
+                  onBlur={emailBlurHandler}
+                  required
+               />
+               {emailHasError && <p>נא להכניס אימייל תקין</p>}
             </div>
             <div className={classes.control}>
                <label htmlFor='password'>סיסמה</label>
-               <input type='password' id='password' ref={passwordInputRef} required />
+               <input
+                  type='password'
+                  id='password'
+                  value={passwordValue}
+                  onChange={passwordChangeHandler}
+                  onBlur={passwordBlurHandler}
+                  required
+               />
+               {passwordHasError && <p>סיסמה חייבת להיות באורך של 6 תווים לפחות</p>}
             </div>
             <div className={classes.actions}>
                {error &&

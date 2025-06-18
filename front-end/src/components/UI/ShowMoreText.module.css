@@ -1,3 +1,4 @@
 .show-more span {
     color: blue;
+    cursor: pointer;
 }
