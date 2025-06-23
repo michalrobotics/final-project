@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import socket from "../socket";
 
 let logoutTimer;
 
@@ -37,6 +38,11 @@ export const UserCtxProvider = (props) => {
       
       const storedUser = JSON.parse(localStorage.getItem('user'));
       setUser(storedUser);
+
+      socket.emit('join', storedUser._id);
+      if (storedUser.isManager) {
+         socket.emit('join', 'admins');
+      }
       
       const storedToken = localStorage.getItem('token');
       setToken(storedToken ? storedToken : '');
@@ -45,6 +51,11 @@ export const UserCtxProvider = (props) => {
    const loginHandler = (user, token) => {
       setUser(user);
       setToken(token);
+
+      socket.emit('join', user._id);
+      if (user.isManager) {
+         socket.emit('join', 'admins');
+      }
       
       // enum to come
       const expiresIn = new Date(new Date().getTime() + 10800000).toISOString();

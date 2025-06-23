@@ -1,5 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import socket from './socket';
 
 import Layout from './components/Layout/Layout';
 import LoginPage from './pages/LoginPage';
@@ -13,6 +14,16 @@ import NewPasswordPage from './pages/NewPasswordPage';
 
 const App = () => {
   const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    const onConnect = () => console.log('connected to socket');
+
+    socket.on('connect', onConnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+    };
+  }, []);
 
   return (
     <div>
