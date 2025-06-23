@@ -11,7 +11,7 @@ const RejectModal = (props) => {
    const rejectHandler = () => {
       const description = descriptionInputRef.current.value;
       sendRequest({
-         url: `http://localhost:8000/requests/${props.request._id}`,
+         url: `${process.env.REACT_APP_BACK_URL}/requests/${props.request._id}`,
          method: 'PATCH',
          headers: {
             'Content-Type': 'application/json',

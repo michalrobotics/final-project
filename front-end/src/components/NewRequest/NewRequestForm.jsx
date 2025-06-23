@@ -22,7 +22,7 @@ const NewRequestForm = () => {
 
       if (enteredRequest !== '' && enteredDescription !== '') {
          sendNewRequest({
-            url: 'http://localhost:8000/requests',
+            url: `${process.env.REACT_APP_BACK_URL}/requests`,
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',

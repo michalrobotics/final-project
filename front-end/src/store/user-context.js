@@ -58,7 +58,7 @@ export const UserCtxProvider = (props) => {
       }
       
       // enum to come
-      const expiresIn = new Date(new Date().getTime() + 10800000).toISOString();
+      const expiresIn = new Date(new Date().getTime() + process.env.REACT_APP_LOGIN_EXPIRATION).toISOString();
       
       const remainingTime = calculateRemainingTime(expiresIn);
       

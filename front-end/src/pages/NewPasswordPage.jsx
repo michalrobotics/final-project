@@ -26,7 +26,7 @@ const NewPasswordPage = () => {
         const token = searchParams.get('token');
 
         sendRequest({
-            url: `http://localhost:8000/users/resetPassword?token=${token}&id=${id}`,
+            url: `${process.env.REACT_APP_BACK_URL}/users/resetPassword?token=${token}&id=${id}`,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

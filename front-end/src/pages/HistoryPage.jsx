@@ -41,7 +41,7 @@ const HistoryPage = () => {
 
    useEffect(() => {
       sendRequest({
-         url: `http://localhost:8000/requests?state=approved,rejected`,
+         url: `${process.env.REACT_APP_BACK_URL}/requests?state=approved,rejected`,
          headers: {
             'Authorization': token
          }
@@ -52,7 +52,7 @@ const HistoryPage = () => {
 
    const loadMore = () => {
       sendRequest({
-         url: `http://localhost:8000/requests?state=approved,rejected&skip=${requests.length}`,
+         url: `${process.env.REACT_APP_BACK_URL}/requests?state=approved,rejected&skip=${requests.length}`,
          headers: {
             'Authorization': token
          }

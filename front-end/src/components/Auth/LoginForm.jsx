@@ -92,9 +92,9 @@ const LoginForm = (props) => {
       let url;
 
       if (isLogin) {
-         url = 'http://localhost:8000/users/login';
+         url = `${process.env.REACT_APP_BACK_URL}/users/login`;
       } else {
-         url = 'http://localhost:8000/users';
+         url = `${process.env.REACT_APP_BACK_URL}/users`;
          body.name = nameValue;
          body.idfNum = idfNumValue;
       }
