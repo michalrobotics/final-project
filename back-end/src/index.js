@@ -30,6 +30,10 @@ io.on('connection', (socket) => {
     socket.on('join', (roomId) => {
         socket.join(roomId);
         console.log(socket.rooms);
+    });
+
+    socket.on('request-approved', ({ _id }, request) => {
+        io.in(_id).emit('approved', request);
     })
 });
 

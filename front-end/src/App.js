@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import socket from './socket';
 
@@ -11,14 +11,23 @@ import MyRequestsPage from './pages/MyRequestsPage';
 import ApprovePage from './pages/ApprovePage';
 import HistoryPage from './pages/HistoryPage';
 import NewPasswordPage from './pages/NewPasswordPage';
+import Notification from './components/Prompts/Notification';
 
 const App = () => {
   const { user } = useContext(UserContext);
 
+  const [showNotif, setShowNotif] = useState(false);
+
   useEffect(() => {
     const onConnect = () => console.log('connected to socket');
+    const onApproved = (request) => {
+      setShowNotif(true);
+      alert(request);
+    }
 
     socket.on('connect', onConnect);
+
+    socket.on('approved', onApproved);
 
     return () => {
       socket.off('connect', onConnect);
@@ -27,6 +36,7 @@ const App = () => {
 
   return (
     <div>
+      {showNotif && <Notification onClose={e => setShowNotif(false)} />}
       <Layout>
         <Routes>
           <Route path='/' element={<WelcomePage />} />

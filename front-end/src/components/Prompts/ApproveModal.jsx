@@ -1,5 +1,6 @@
 import Modal from "../UI/Modal";
 import useHttp from '../../hooks/use-http';
+import socket from "../../socket";
 
 const ApproveModal = (props) => {
    const { sendRequest } = useHttp();
@@ -16,6 +17,8 @@ const ApproveModal = (props) => {
             state: 'approved'
          }
       });
+
+      socket.emit("request-approved", props.request.creator, props.request.title);
       props.onClose();
    }
 
