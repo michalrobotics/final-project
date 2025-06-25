@@ -18,7 +18,7 @@ const ApproveModal = (props) => {
          }
       });
 
-      socket.emit("request-approved", props.request.creator, props.request.title);
+      socket.emit("request-responded", props.request.creator._id, props.request.title, true);
       props.onClose();
    }
 

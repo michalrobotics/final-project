@@ -32,8 +32,8 @@ io.on('connection', (socket) => {
         console.log(socket.rooms);
     });
 
-    socket.on('request-approved', ({ _id }, request) => {
-        io.in(_id).emit('approved', request);
+    socket.on('request-responded', (id, request, status) => {
+        io.in(id).emit('request-response', request, status);
     })
 });
 

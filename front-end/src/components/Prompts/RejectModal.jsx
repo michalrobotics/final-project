@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 
+import socket from '../../socket';
 import Modal from "../UI/Modal";
 import useHttp from '../../hooks/use-http';
 
@@ -22,6 +23,8 @@ const RejectModal = (props) => {
             description: description || undefined
          }
       });
+
+      socket.emit("request-responded", props.request.creator._id, props.request.title, false);
       props.onClose();
    }
 
