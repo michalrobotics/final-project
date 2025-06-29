@@ -1,5 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useReducer } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import socket from './socket';
 
 import Layout from './components/Layout/Layout';
 import LoginPage from './pages/LoginPage';
@@ -10,12 +11,62 @@ import MyRequestsPage from './pages/MyRequestsPage';
 import ApprovePage from './pages/ApprovePage';
 import HistoryPage from './pages/HistoryPage';
 import NewPasswordPage from './pages/NewPasswordPage';
+import Notification from './components/Prompts/Notification';
+
+const initialNotifState = {
+  show: false,
+  title: '',
+  description: ''
+};
+
+const notifStateReducer = (state, action) => {
+  if (action.type === 'SHOW') {
+    return {show: true, title: action.title, description: action.description};
+  }
+  if (action.type === 'CLOSE') {
+    return initialNotifState;
+  }
+  return state;
+}
+
 
 const App = () => {
   const { user } = useContext(UserContext);
+  
+  const [notifState, dispatch] = useReducer(notifStateReducer, initialNotifState);
+
+  useEffect(() => {
+    const onConnect = () => console.log('connected to socket');
+    const onResponse = (request, status) => {
+      dispatch({
+        type: 'SHOW',
+        title: `בקשתך ${status ? 'אושרה' : 'נדחתה'}`,
+        description: `בקשתך ${<b>{request}</b>} ${status ? 'אושרה' : 'נדחתה'}`
+      });
+    }
+
+    socket.on('connect', onConnect);
+
+    socket.on('request-response', onResponse);
+
+    return () => {
+      socket.off('connect', onConnect);
+    };
+  }, []);
+
+  const closeNotifHandler = () => {
+    dispatch({ type: 'CLOSE' });
+  }
 
   return (
     <div>
+      {notifState.show &&
+        <Notification
+          onClose={closeNotifHandler}
+          title={notifState.title}
+          description={notifState.description}
+        />
+      }
       <Layout>
         <Routes>
           <Route path='/' element={<WelcomePage />} />

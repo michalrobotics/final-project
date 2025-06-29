@@ -10,7 +10,7 @@ const RecoveryForm = (props) => {
     const submitHandler = (event) => {
         event.preventDefault();
         sendRequest({
-            url: 'http://localhost:8000/users/recover',
+            url: `${process.env.REACT_APP_BACK_URL}/users/recover`,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

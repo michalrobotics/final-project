@@ -13,7 +13,7 @@ const MyRequestsPage = () => {
 
    useEffect(() => {
       sendRequest({
-         url: `http://localhost:8000/requests?creator=${user._id}`,
+         url: `${process.env.REACT_APP_BACK_URL}/requests?creator=${user._id}`,
          headers: {
             'Authorization': token
          }

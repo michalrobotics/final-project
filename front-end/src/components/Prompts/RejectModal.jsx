@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 
+import socket from '../../socket';
 import Modal from "../UI/Modal";
 import useHttp from '../../hooks/use-http';
 
@@ -11,7 +12,7 @@ const RejectModal = (props) => {
    const rejectHandler = () => {
       const description = descriptionInputRef.current.value;
       sendRequest({
-         url: `http://localhost:8000/requests/${props.request._id}`,
+         url: `${process.env.REACT_APP_BACK_URL}/requests/${props.request._id}`,
          method: 'PATCH',
          headers: {
             'Content-Type': 'application/json',
@@ -22,6 +23,8 @@ const RejectModal = (props) => {
             description: description || undefined
          }
       });
+
+      socket.emit("request-responded", props.request.creator._id, props.request.title, false);
       props.onClose();
    }
 

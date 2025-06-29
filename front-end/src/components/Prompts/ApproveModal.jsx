@@ -1,12 +1,13 @@
 import Modal from "../UI/Modal";
 import useHttp from '../../hooks/use-http';
+import socket from "../../socket";
 
 const ApproveModal = (props) => {
    const { sendRequest } = useHttp();
    
    const approveHandler = () => {
       sendRequest({
-         url: `http://localhost:8000/requests/${props.request._id}`,
+         url: `${process.env.REACT_APP_BACK_URL}/requests/${props.request._id}`,
          method: 'PATCH',
          headers: {
             'Content-Type': 'application/json',
@@ -16,6 +17,8 @@ const ApproveModal = (props) => {
             state: 'approved'
          }
       });
+
+      socket.emit("request-responded", props.request.creator._id, props.request.title, true);
       props.onClose();
    }
 
