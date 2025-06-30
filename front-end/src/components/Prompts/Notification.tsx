@@ -1,6 +1,12 @@
 import Modal from "../UI/Modal";
 
-const Notification = (props) => {
+type Props = {
+    onClose: () => void;
+    title: string;
+    description: string;
+}
+
+const Notification: React.FC<Props> = (props) => {
     return (
         <Modal onClose={props.onClose}>
             <h1>{props.title}</h1>

@@ -4,8 +4,15 @@ import RequestItem from "../RequestItem";
 import UserContext from "../../../store/user-context";
 import ApproveModal from "../../Prompts/ApproveModal";
 import RejectModal from "../../Prompts/RejectModal";
+import Request from "../../../models/request";
 
-const AdminRequestItem = (props) => {
+type Props = {
+   request: Request;
+   showDate?: boolean;
+   showUser?: boolean;
+}
+
+const AdminRequestItem: React.FC<Props> = (props) => {
    const { token } = useContext(UserContext);
 
    const [showApproveModal, setShowApproveModal] = useState(false);

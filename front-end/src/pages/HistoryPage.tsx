@@ -4,13 +4,14 @@ import UserContext from "../store/user-context";
 import useHttp from "../hooks/use-http";
 import RequestList from "../components/Requests/RequestList";
 import LoadingSpinner from '../components/UI/LoadingSpinner';
+import Request from "../models/request";
 
 const HistoryPage = () => {
    const { sendRequest, isLoading } = useHttp();
 
    const { token } = useContext(UserContext);
 
-   const [requests, setRequests] = useState([]);
+   const [requests, setRequests] = useState<Request[]>([]);
    const [startDate, setStartDate] = useState('');
    const [endDate, setEndDate] = useState('');
 
@@ -23,7 +24,7 @@ const HistoryPage = () => {
          ));
       }
       if (endDate !== '') {
-         const endDateObj = new Date(endDate).setHours(23, 59, 59);
+         const endDateObj = new Date(new Date(endDate).setHours(23, 59, 59));
          filtered = filtered.filter((request) => (
             endDateObj >= new Date(request.createdAt)
          ));
@@ -31,11 +32,11 @@ const HistoryPage = () => {
       return filtered;
    }, [startDate, endDate, requests]);
 
-   const startDateChangeHandler = (event) => {
+   const startDateChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
       setStartDate(event.target.value);
    }
    
-   const endDateChangeHandler = (event) => {
+   const endDateChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
       setEndDate(event.target.value);
    }
 

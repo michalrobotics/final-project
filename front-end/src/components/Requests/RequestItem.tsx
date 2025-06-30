@@ -1,8 +1,14 @@
 import classes from './RequestItem.module.css';
 import ShowMoreText from '../UI/ShowMoreText';
+import Request from '../../models/request';
 
-const RequestItem = (props) => {
+type Props = {
+   request: Request;
+   showDate?: boolean;
+   showUser?: boolean;
+}
 
+const RequestItem: React.FC<Props> = (props) => {
    const request = props.request;
 
    let date;

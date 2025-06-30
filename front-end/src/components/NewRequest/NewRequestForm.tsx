@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { FormEvent, useContext, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 
 import useHttp from "../../hooks/use-http";
@@ -11,14 +11,14 @@ const NewRequestForm = () => {
 
    const { token } = useContext(UserContext);
 
-   const requestInputRef = useRef();
-   const descriptionInputRef = useRef();
+   const requestInputRef = useRef<HTMLSelectElement>(null);
+   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
-   const submitHandler = (event) => {
+   const submitHandler = (event: FormEvent) => {
       event.preventDefault();
 
-      const enteredRequest = requestInputRef.current.value.trim();
-      const enteredDescription = descriptionInputRef.current.value.trim();
+      const enteredRequest = requestInputRef.current!.value.trim();
+      const enteredDescription = descriptionInputRef.current!.value.trim();
 
       if (enteredRequest !== '' && enteredDescription !== '') {
          sendNewRequest({
@@ -32,7 +32,7 @@ const NewRequestForm = () => {
                title: enteredRequest,
                description: enteredDescription
             }
-         });
+         }, null);
          navigate('/requests');
       }
    }

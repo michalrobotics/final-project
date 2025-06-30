@@ -1,13 +1,13 @@
-import { useRef } from "react";
+import { FormEvent, useRef } from "react";
 
 import useHttp from "../../hooks/use-http";
 
-const RecoveryForm = (props) => {
+const RecoveryForm: React.FC<{ onBack: () => void }> = (props) => {
     const { sendRequest, isLoading, error } = useHttp();
 
-    const emailInputRef = useRef();
+    const emailInputRef = useRef<HTMLInputElement>(null);
 
-    const submitHandler = (event) => {
+    const submitHandler = (event: FormEvent) => {
         event.preventDefault();
         sendRequest({
             url: `${process.env.REACT_APP_BACK_URL}/users/recover`,
@@ -16,11 +16,11 @@ const RecoveryForm = (props) => {
                 'Content-Type': 'application/json'
             },
             body: {
-                email: emailInputRef.current.value
+                email: emailInputRef.current!.value
             }
-        });
+        }, null);
     }
-    
+
     if (isLoading) {
         return <p>Sending...</p>;
     }

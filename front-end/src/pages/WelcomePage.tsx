@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import UserContext from '../store/user-context';
 import classes from './WelcomePage.module.css';
 
-const WelcomePage = () => {
+const WelcomePage: React.FC = () => {
    const { user } = useContext(UserContext);
 
    return (

@@ -13,13 +13,23 @@ import HistoryPage from './pages/HistoryPage';
 import NewPasswordPage from './pages/NewPasswordPage';
 import Notification from './components/Prompts/Notification';
 
-const initialNotifState = {
+type NotifState = {
+  show: boolean;
+  title: string;
+  description: string;
+};
+
+type Action = 
+  | { type: "CLOSE" }
+  | { type: "SHOW"; title: string; description: string; }
+
+const initialNotifState: NotifState = {
   show: false,
   title: '',
   description: ''
 };
 
-const notifStateReducer = (state, action) => {
+const notifStateReducer = (state: NotifState, action: Action) => {
   if (action.type === 'SHOW') {
     return {show: true, title: action.title, description: action.description};
   }
@@ -29,7 +39,6 @@ const notifStateReducer = (state, action) => {
   return state;
 }
 
-
 const App = () => {
   const { user } = useContext(UserContext);
   
@@ -37,7 +46,7 @@ const App = () => {
 
   useEffect(() => {
     const onConnect = () => console.log('connected to socket');
-    const onResponse = (request, status) => {
+    const onResponse = (request: string, status: string) => {
       dispatch({
         type: 'SHOW',
         title: `בקשתך ${status ? 'אושרה' : 'נדחתה'}`,

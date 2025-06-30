@@ -3,7 +3,7 @@ import { useState } from "react";
 import LoginForm from "../components/Auth/LoginForm";
 import RecoveryForm from "../components/Auth/RecoveryForm";
 
-const LoginPage = (props) => {
+const LoginPage = () => {
    const [isLog, setIsLog] = useState(true);
 
    const forgotPasswordHandler = () => {

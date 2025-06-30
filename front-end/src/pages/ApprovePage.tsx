@@ -4,23 +4,24 @@ import UserContext from "../store/user-context";
 import useHttp from "../hooks/use-http";
 import AdminRequestList from "../components/Requests/Admin/AdminRequestList";
 import LoadingSpinner from '../components/UI/LoadingSpinner';
+import Request from "../models/request";
 
 const ApprovePage = () => {
    const { sendRequest, isLoading } = useHttp();
 
    const { token } = useContext(UserContext);
 
-   const [requests, setRequests] = useState([]);
-   const [filter, setFilter] = useState();
+   const [requests, setRequests] = useState<Request[]>([]);
+   const [filter, setFilter] = useState('');
 
    const filteredRequests = useMemo(() => {
-      if (filter) {
+      if (filter !== '') {
          return requests.filter((request) => request.title === filter);
       }
       return requests;
    }, [requests, filter]);
 
-   const filterChangeHandler = (event) => {
+   const filterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
       setFilter(event.target.value);
    }
 

@@ -1,11 +1,21 @@
 import { useReducer } from "react";
 
-const initialInputState = {
-    value: '',
-    isTouched: false
+type InputState = {
+    value: string;
+    isTouched: boolean;
 };
 
-const inputStateReducer = (state, action) => {
+type Action =
+    | { type: "RESET" }
+    | { type: "BLUR" }
+    | { type: "INPUT"; value: string; }
+
+    const initialInputState = {
+        value: '',
+        isTouched: false
+    };
+
+const inputStateReducer = (state: InputState, action: Action) => {
     if (action.type === 'INPUT') {
         return { value: action.value, isTouched: state.isTouched };
     }
@@ -18,13 +28,13 @@ const inputStateReducer = (state, action) => {
     return state;
 }
 
-const useInput = (validateFunction) => {
+const useInput = (validateFunction: (value: string) => boolean) => {
     const [inputState, dispatch] = useReducer(inputStateReducer, initialInputState);
 
     const valueIsValid = validateFunction(inputState.value);
     const hasError = !valueIsValid && inputState.isTouched;
 
-    const valueChangeHandler = (event) => {
+    const valueChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch({ type: 'INPUT', value: event.target.value });
     }
 

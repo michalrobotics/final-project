@@ -1,16 +1,18 @@
-import { useRef } from 'react';
-
-import socket from '../../socket';
 import Modal from "../UI/Modal";
 import useHttp from '../../hooks/use-http';
+import socket from "../../socket";
+import Request from "../../models/request";
 
-const RejectModal = (props) => {
-   const descriptionInputRef = useRef();
+type Props = {
+   request: Request;
+   token: string;
+   onClose: () => void;
+}
 
+const ApproveModal: React.FC<Props> = (props) => {
    const { sendRequest } = useHttp();
-
-   const rejectHandler = () => {
-      const description = descriptionInputRef.current.value;
+   
+   const approveHandler = () => {
       sendRequest({
          url: `${process.env.REACT_APP_BACK_URL}/requests/${props.request._id}`,
          method: 'PATCH',
@@ -19,31 +21,27 @@ const RejectModal = (props) => {
             'Authorization': props.token
          },
          body: {
-            state: 'rejected',
-            description: description || undefined
+            state: 'approved'
          }
-      });
+      }, null);
 
-      socket.emit("request-responded", props.request.creator._id, props.request.title, false);
+      socket.emit("request-responded", props.request.creator._id, props.request.title, true);
       props.onClose();
    }
 
    return (
       <Modal onClose={props.onClose}>
          <p>
-            לסרב לבקשה
+            לאשר את הבקשה
             <br />
             <i>{props.request.title}</i>
             <br />
             של <i>{props.request.creator.name}</i>
-            <br />
-            ניתן לפרט:
-            <textarea ref={descriptionInputRef} />
          </p>
          <button onClick={props.onClose}>ביטול</button>
-         <button onClick={rejectHandler}>סרב</button>
+         <button onClick={approveHandler}>אשר</button>
       </Modal>
    );
 }
 
-export default RejectModal;
+export default ApproveModal;

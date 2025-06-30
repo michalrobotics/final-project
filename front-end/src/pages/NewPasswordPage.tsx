@@ -13,9 +13,9 @@ const NewPasswordPage = () => {
 
     const navigate = useNavigate();
 
-    const passwordInputRef = useRef();
+    const passwordInputRef = useRef<HTMLInputElement>(null);
 
-    const submitHandler = (event) => {
+    const submitHandler = (event: React.FormEvent) => {
         event.preventDefault();
 
         if (!(searchParams.has('id') && searchParams.has('token'))) {
@@ -32,7 +32,7 @@ const NewPasswordPage = () => {
                 'Content-Type': 'application/json'
             },
             body: {
-                password: passwordInputRef.current.value
+                password: passwordInputRef.current!.value
             }
         }, (data) => {
             login(data.user, data.token);

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { FormEvent, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import classes from './LoginForm.module.css';
@@ -6,7 +6,7 @@ import useHttp from '../../hooks/use-http';
 import UserContext from '../../store/user-context';
 import useInput from '../../hooks/use-input';
 
-const LoginForm = (props) => {
+const LoginForm: React.FC<{ onForgot: () => void }> = (props) => {
    const navigate = useNavigate();
 
    const { sendRequest: sendLoginRequest, error, isLoading } = useHttp();
@@ -77,14 +77,19 @@ const LoginForm = (props) => {
       }
    }
 
-   const submitHandler = (event) => {
+   const submitHandler = (event: FormEvent) => {
       event.preventDefault();
 
       if (!formIsValid) {
          return;
       }
 
-      const body = {
+      const body: {
+         email: string;
+         password: string;
+         name?: string;
+         idfNum?: number
+      } = {
          email: emailValue,
          password: passwordValue
       };
@@ -96,7 +101,7 @@ const LoginForm = (props) => {
       } else {
          url = `${process.env.REACT_APP_BACK_URL}/users`;
          body.name = nameValue;
-         body.idfNum = idfNumValue;
+         body.idfNum = +idfNumValue;
       }
 
       sendLoginRequest({
@@ -108,7 +113,7 @@ const LoginForm = (props) => {
          }
       }, (data) => {
          login(data.user, data.token);
-         
+
          resetName();
          resetIdfNum();
          resetEmail();
@@ -143,7 +148,7 @@ const LoginForm = (props) => {
                         value={idfNumValue}
                         onChange={idfNumChangeHandler}
                         onBlur={idfNumBlurHandler}
-                        required 
+                        required
                      />
                      {idfNumHasError && <p>נא להכניס מס' אישי תקין</p>}
                   </div>

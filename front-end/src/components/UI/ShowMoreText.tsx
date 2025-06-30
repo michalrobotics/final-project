@@ -2,7 +2,12 @@ import { useState } from "react";
 
 import classes from './ShowMoreText.module.css';
 
-const ShowMoreText = (props) => {
+type Props = {
+    children: string;
+    limit: string;
+}
+
+const ShowMoreText: React.FC<Props> = (props) => {
     const [showMore, setShowMore] = useState(false);
 
     const addedText = showMore ? 'הראה פחות' : '...הראה עוד';

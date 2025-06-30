@@ -1,7 +1,14 @@
+import Request from "../../models/request";
 import RequestItem from "./RequestItem";
 import classes from './RequestList.module.css';
 
-const RequestList = (props) => {
+type Props = {
+   requests: Request[];
+   showDate?: boolean;
+   showUser?: boolean;
+}
+
+const RequestList: React.FC<Props> = (props) => {
    return (
       <>
          <ul className={classes['request-list']}>

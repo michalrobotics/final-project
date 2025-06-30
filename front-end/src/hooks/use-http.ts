@@ -1,10 +1,17 @@
 import { useState, useCallback } from "react";
 
+type ReqConfig = {
+   url: string;
+   method?: string;
+   headers?: any;
+   body?: any;
+}
+
 const useHttp = () => {
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
 
-   const sendRequest = useCallback(async (reqConfig, implementData) => {
+   const sendRequest = useCallback(async (reqConfig: ReqConfig, implementData: ((data: any) => void) | null) => {
       setIsLoading(true);
       setError(null);
       try {
@@ -23,8 +30,8 @@ const useHttp = () => {
          if (implementData) {
             implementData(data);
          }
-      } catch (e) {
-         setError(e.message || 'Something went wrong');
+      } catch (e: any) {
+         setError(e.message || 'משהו השתבש, אנא נסו שוב מאוחר יותר');
       }
       setIsLoading(false);
    }, []);

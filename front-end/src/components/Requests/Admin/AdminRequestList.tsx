@@ -1,7 +1,8 @@
 import AdminRequestItem from "./AdminRequestItem";
 import classes from '../RequestList.module.css';
+import Request from "../../../models/request";
 
-const AdminRequestList = (props) => {
+const AdminRequestList: React.FC<{requests: Request[]}> = (props) => {
    return (
       <>
          <ul className={classes['request-list']}>

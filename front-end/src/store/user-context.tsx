@@ -1,16 +1,25 @@
 import { createContext, useEffect, useState } from "react";
 import socket from "../socket";
 
-let logoutTimer;
+import User from "../models/user";
 
-const UserContext = createContext({
+let logoutTimer: ReturnType<typeof setTimeout> | undefined;
+
+type UserContextObj = {
+   user: User | null;
+   token: string;
+   login: (user: User, token: string) => void;
+   logout: () => void;
+}
+
+const UserContext = createContext<UserContextObj>({
    user: null,
    token: '',
    login: (user, token) => {},
    logout: () => {}
 });
 
-const calculateRemainingTime = (expirationTime) => {
+const calculateRemainingTime = (expirationTime: string) => {
    const currentTime = new Date().getTime();
    const adjExpirationTime = new Date(expirationTime).getTime();
 
@@ -19,12 +28,21 @@ const calculateRemainingTime = (expirationTime) => {
    return remainingDuration;
 }
 
-export const UserCtxProvider = (props) => {
-   const [user, setUser] = useState(null);
+type Props = {
+   children?: React.ReactNode;
+}
+
+export const UserCtxProvider: React.FC<Props> = (props) => {
+   const [user, setUser] = useState<User | null>(null);
    const [token, setToken] = useState('');
 
    useEffect(() => {
       const storedExpirationDate = localStorage.getItem('expirationTime');
+
+      if (!storedExpirationDate) {
+         return;
+      }
+
       const remainingTime = calculateRemainingTime(storedExpirationDate);
 
       if (remainingTime <= 60000) {
@@ -36,7 +54,7 @@ export const UserCtxProvider = (props) => {
 
       logoutTimer = setTimeout(logoutHandler, remainingTime);
 
-      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const storedUser = JSON.parse(localStorage.getItem('user')!);
       setUser(storedUser);
 
       socket.emit('join', storedUser._id);
@@ -48,7 +66,7 @@ export const UserCtxProvider = (props) => {
       setToken(storedToken ? storedToken : '');
    }, []);
 
-   const loginHandler = (user, token) => {
+   const loginHandler = (user: User, token: string) => {
       setUser(user);
       setToken(token);
 
@@ -58,7 +76,7 @@ export const UserCtxProvider = (props) => {
       }
       
       // enum to come
-      const expiresIn = new Date(new Date().getTime() + parseInt(process.env.REACT_APP_LOGIN_EXPIRATION)).toISOString();
+      const expiresIn = new Date(new Date().getTime() + parseInt(process.env.REACT_APP_LOGIN_EXPIRATION!)).toISOString();
       
       const remainingTime = calculateRemainingTime(expiresIn);
       
@@ -82,7 +100,7 @@ export const UserCtxProvider = (props) => {
       }
    }
 
-   const contextValue = {
+   const contextValue: UserContextObj = {
       user,
       token,
       login: loginHandler,

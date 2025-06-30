@@ -4,16 +4,17 @@ import RequestList from "../components/Requests/RequestList";
 import UserContext from "../store/user-context";
 import useHttp from "../hooks/use-http";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
+import Request from "../models/request";
 
 const MyRequestsPage = () => {
    const { isLoading, sendRequest } = useHttp();
 
-   const [requests, setRequests] = useState([]);
+   const [requests, setRequests] = useState<Request[]>([]);
    const { user, token } = useContext(UserContext);
 
    useEffect(() => {
       sendRequest({
-         url: `${process.env.REACT_APP_BACK_URL}/requests?creator=${user._id}`,
+         url: `${process.env.REACT_APP_BACK_URL}/requests?creator=${user!._id}`,
          headers: {
             'Authorization': token
          }
@@ -22,8 +23,8 @@ const MyRequestsPage = () => {
       });
    }, [sendRequest, user, token]);
 
-   let openRequests = [];
-   let closedRequests = [];
+   let openRequests: Request[] = [];
+   let closedRequests: Request[] = [];
 
    requests.forEach((request) => {
       if (request.status.state === 'open') {
