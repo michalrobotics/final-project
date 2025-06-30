@@ -1,4 +1,3 @@
-// import env from 'dotenv';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -6,9 +5,7 @@ import './index.css';
 import App from './App';
 import { UserCtxProvider } from './store/user-context';
 
-// env.config();
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <UserCtxProvider>
     <BrowserRouter>
