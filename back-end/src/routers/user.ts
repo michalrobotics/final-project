@@ -1,3 +1,6 @@
+import { Request, Response } from "express";
+import { AuthRequest } from "../types/express";
+
 const express = require('express');
 const router = new express.Router();
 const User = require('../models/user');
@@ -6,32 +9,32 @@ const { StatusCodes } = require('http-status-codes');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 
-router.post('/users', async (req, res) => {
+router.post('/users', async (req: Request, res: Response) => {
     const user = new User(req.body);
 
     try {
         await user.save();
         const token = await user.generateAuthToken(process.env.JWT_SECRET);
         res.status(StatusCodes.CREATED).send({ user, token });
-    } catch (e) {
+    } catch (e: any) {
         res.status(StatusCodes.BAD_REQUEST).send({ error: e.message });
     }
 });
 
-router.post('/users/login', async (req, res) => {
+router.post('/users/login', async (req: Request, res: Response) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await user.generateAuthToken(process.env.JWT_SECRET);
 
         res.send({ user, token });
-    } catch (e) {
+    } catch (e: any) {
         res.status(StatusCodes.BAD_REQUEST).send({ error: e.message });
     }
 });
 
-router.post('/users/logout', auth, async (req, res) => {
+router.post('/users/logout', auth, async (req: AuthRequest, res: Response) => {
     try {
-        req.user.tokens = req.user.tokens.filter((token) => {
+        req.user.tokens = req.user.tokens.filter((token: { token: string }) => {
             return token.token !== req.token;
         });
         await req.user.save();
@@ -42,7 +45,7 @@ router.post('/users/logout', auth, async (req, res) => {
     }
 });
 
-router.patch('/users/me', auth, async (req, res) => {
+router.patch('/users/me', auth, async (req: AuthRequest, res: Response) => {
     const updates = Object.keys(req.body);
     const allowedUpdates = req.user.getAllowedUpdates();
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
@@ -55,12 +58,12 @@ router.patch('/users/me', auth, async (req, res) => {
         updates.forEach((update) => req.user[update] = req.body[update]);
         await req.user.save();
         res.send(req.user);
-    } catch (e) {
+    } catch (e: any) {
         res.status(StatusCodes.BAD_REQUEST).send({ error: e.message });
     }
 });
 
-router.post('/users/recover', async (req, res) => {
+router.post('/users/recover', async (req: Request, res: Response) => {
     try {
         const user = await User.findOne({ email: req.body.email });
 
@@ -95,12 +98,12 @@ router.post('/users/recover', async (req, res) => {
         await transporter.sendMail(mailOptions);
 
         res.send({ message: 'Password reset link sent' });
-    } catch (e) {
+    } catch (e: any) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: e.message });
     }
 });
 
-router.post('/users/resetPassword', async (req, res) => {
+router.post('/users/resetPassword', async (req: Request, res: Response) => {
     const { id, token } = req.query;
     const { password } = req.body;
     try {
@@ -120,7 +123,7 @@ router.post('/users/resetPassword', async (req, res) => {
         const newToken = await user.generateAuthToken(process.env.JWT_SECRET);
 
         res.send({ user, token: newToken });
-    } catch (e) {
+    } catch (e: any) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: e.message });
     }
 });

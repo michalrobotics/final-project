@@ -1,11 +1,14 @@
+import type { Response } from "express";
+import type { AuthRequest } from "../types/express";
+
 const express = require('express');
 const router = new express.Router();
-const Request = require('../models/request');
+const BMRequest = require('../models/request');
 const auth = require('../middleware/auth');
 const { StatusCodes } = require('http-status-codes');
 
-router.post('/requests', auth, async (req, res) => {
-    const request = new Request({
+router.post('/requests', auth, async (req: AuthRequest, res: Response) => {
+    const request = new BMRequest({
         ...req.body,
         creator: req.user._id
     });
@@ -13,12 +16,12 @@ router.post('/requests', auth, async (req, res) => {
     try {
         await request.save();
         res.status(StatusCodes.CREATED).send(request);
-    } catch (e) {
+    } catch (e: any) {
         res.status(StatusCodes.BAD_REQUEST).send({ error: e.message });
     }
 });
 
-router.patch('/requests/:id', auth, async (req, res) => {
+router.patch('/requests/:id', auth, async (req: AuthRequest, res: Response) => {
     if (!req.user.isManager) {
         res.status(StatusCodes.UNAUTHORIZED).send({ error: 'Only managers can change a request status' });
     }
@@ -32,7 +35,7 @@ router.patch('/requests/:id', auth, async (req, res) => {
     }
 
     try {
-        const request = await Request.findById(req.params.id);
+        const request = await BMRequest.findById(req.params.id);
 
         if (!request) {
             res.status(StatusCodes.NOT_FOUND).send();
@@ -43,46 +46,59 @@ router.patch('/requests/:id', auth, async (req, res) => {
 
         await request.save();
         res.send(request);
-    } catch (e) {
+    } catch (e: any) {
         res.status(StatusCodes.BAD_REQUEST).send({ error: e.message });
     }
 });
 
-router.get('/requests', auth, async (req, res) => {
-    const match = {};
+router.get('/requests', auth, async (req: AuthRequest, res: Response) => {
+    const match: {
+        creator?: string;
+        title?: string;
+        'status.state'?: {
+            $in: string[]
+        };
+        createdAt?: {
+            $gte?: Date
+            $lte?: Date
+        };
+    } = {};
 
     if (!req.user.isManager) {
         match.creator = req.user._id;
-    } else if (req.query.creator) {
+    } else if (req.query.creator && typeof req.query.creator === 'string') {
         match.creator = req.query.creator;
     }
 
-    if (req.query.state) {
+    if (req.query.state && typeof req.query.state === 'string') {
         const states = req.query.state.split(',');
         match['status.state'] = { $in: states };
     }
 
-    if (req.query.request) {
-        match.request = req.query.request;
+    if (req.query.title && typeof req.query.title === 'string') {
+        match.title = req.query.title;
     }
 
     if (req.query.from || req.query.until) {
         match.createdAt = {};
-        if (req.query.from) {
+        if (req.query.from && typeof req.query.from === 'string') {
             match.createdAt['$gte'] = new Date(new Date(req.query.from).setHours(0, 0, 0));
         }
-        if (req.query.until) {
+        if (req.query.until && typeof req.query.until === 'string') {
             match.createdAt['$lte'] = new Date(new Date(req.query.until).setHours(23, 59, 59));
         }
     }
 
+    const limit = typeof req.query.limit === 'string' ? parseInt(req.query.limit) : undefined;
+    const skip = typeof req.query.skip === 'string' ? parseInt(req.query.skip) : undefined;
+
     try {
-        const requests = await Request.find(
+        const requests = await BMRequest.find(
             match,
             null,
             {
-                limit: 50,
-                skip: parseInt(req.query.skip)
+                limit,
+                skip
             }
         );
 
@@ -91,7 +107,7 @@ router.get('/requests', auth, async (req, res) => {
         }
 
         res.send(requests);
-    } catch (e) {
+    } catch (e: any) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: e.message });
     }
 });

@@ -1,3 +1,5 @@
+import type { Socket } from "socket.io";
+
 const express = require('express');
 const cors = require('cors');
 const { Server } = require('socket.io');
@@ -24,15 +26,12 @@ app.use(cors());
 app.use(requestRouter);
 app.use(userRouter);
 
-io.on('connection', (socket) => {
-    console.log('connected new user: ' + socket.id);
-
-    socket.on('join', (roomId) => {
+io.on('connection', (socket: Socket) => {
+    socket.on('join', (roomId: string) => {
         socket.join(roomId);
-        console.log(socket.rooms);
     });
 
-    socket.on('request-responded', (id, request, status) => {
+    socket.on('request-responded', (id: string, request: string, status: string) => {
         io.in(id).emit('request-response', request, status);
     })
 });

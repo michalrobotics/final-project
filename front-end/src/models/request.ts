@@ -5,8 +5,8 @@ type Request = {
    title: string;
    description: string;
    creator: User;
-   createdAt: Date;
-   updatedAt: Date;
+   createdAt: string;
+   updatedAt: string;
    __v: number;
    status: {
       state: string;
