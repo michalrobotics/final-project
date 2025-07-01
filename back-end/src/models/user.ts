@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+import { NextFunction } from "express";
+
+const mongoose = require('../db/mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -19,7 +21,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         lowercase: true,
-        validate(value) {
+        validate(value: string) {
             if (!value.includes('@')) {
                 throw new Error('Email is invalid');
             }
@@ -43,7 +45,7 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
-userSchema.methods.generateAuthToken = async function (secret) {
+userSchema.methods.generateAuthToken = async function (secret: string) {
     const user = this;
 
     const token = jwt.sign({ _id: user._id.toString() }, secret, { expiresIn: '3h' });
@@ -77,7 +79,7 @@ userSchema.methods.getAllowedUpdates = function () {
     return allowedUpdates;
 }
 
-userSchema.statics.findByCredentials = async (email, password) => {
+userSchema.statics.findByCredentials = async (email: string, password: string) => {
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -93,7 +95,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
     return user;
 }
 
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function (this: typeof User, next: NextFunction) {
     const user = this;
 
     if (user.isModified('password')) {

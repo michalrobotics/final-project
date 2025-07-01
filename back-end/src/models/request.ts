@@ -31,6 +31,6 @@ const requestSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const Request = mongoose.model('Request', requestSchema);
+const BMRequest = mongoose.model('Request', requestSchema);
 
-module.exports = Request;
+module.exports = BMRequest;
