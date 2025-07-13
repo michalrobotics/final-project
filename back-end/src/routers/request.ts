@@ -100,7 +100,7 @@ router.get('/requests', auth, async (req: AuthRequest, res: Response) => {
                 limit,
                 skip
             }
-        );
+        ).sort({createdAt: 'desc'});
 
         for (const request of requests) {
             await request.populate('creator');

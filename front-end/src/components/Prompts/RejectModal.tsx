@@ -40,7 +40,7 @@ const RejectModal: React.FC<Props> = (props) => {
          <p>
             לסרב לבקשה
             <br />
-            <i>{props.request.title}</i>
+            <b>{props.request.title}</b>
             <br />
             של <i>{props.request.creator.name}</i>
             <br />

@@ -50,7 +50,7 @@ const App = () => {
       dispatch({
         type: 'SHOW',
         title: `בקשתך ${status ? 'אושרה' : 'נדחתה'}`,
-        description: `בקשתך ${<b>{request}</b>} ${status ? 'אושרה' : 'נדחתה'}`
+        description: `בקשתך ${request} ${status ? 'אושרה' : 'נדחתה'}`
       });
     }
 

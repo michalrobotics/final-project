@@ -8,7 +8,8 @@
     "serve": "nodemon ./dist/index.js",
     "postinstall": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only ./src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "Michush",

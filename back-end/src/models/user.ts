@@ -1,6 +1,6 @@
 import { NextFunction } from "express";
 
-const mongoose = require('../db/mongoose');
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
